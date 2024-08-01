@@ -1,0 +1,60 @@
+name: ospf1
+
+topology:
+  kinds:
+    arista_ceos:
+      type: ceos
+      image: ceos:4.32.0F
+    
+    cisco_c8000v:
+      type: cisco_c8000v
+      image: vrnetlab/vr-c8000v:17.09.05a
+    
+    cisco_xrd:
+      type: cisco_xrd
+      image: ios-xr/xrd-control-plane:7.11.2
+    
+    nokia_sros:
+      type: nokia_sros
+      image: vrnetlab/vr-sros:24.3.R1
+      license: sros-v24.lic
+
+  nodes:
+    # Arista cEOS Nodes (Area 1)
+    ceos1:
+      kind: arista_ceos
+    ceos2:
+      kind: arista_ceos
+
+    # Cisco ASR9k XRd Nodes (Area 0)
+    xrd1:
+      kind: cisco_xrd
+    xrd2:
+      kind: cisco_xrd
+
+    # Nokia SROS Nodes (Area 0)
+    # sros1:
+    #   kind: nokia_sros
+    # sros:
+    #   kind: nokia_sros
+
+    # Cisco 8000v Nodes (Area 2)
+    c8000v1:
+      kind: cisco_c8000v
+    c8000v2:
+      kind: cisco_c8000v
+
+  links:
+    # Area 1 - Area 0 connection
+    - endpoints: ["ceos1:Ethernet1", "xrd1:Gi0-0-0-0"]
+    # Internal Area 1 connection
+    - endpoints: ["ceos1:Ethernet2", "ceos2:Ethernet1"]
+
+    # Area 0 Backbone connection
+    - endpoints: ["xrd1:Gi0-0-0-1", "xrd2:Gi0-0-0-0"]
+
+    # Area 2 - Area 0 connection
+    - endpoints: ["c8000v1:Gi2", "xrd2:Gi0-0-0-1"]
+    # Internal Area 2 connection
+    - endpoints: ["c8000v1:Gi3", "c8000v2:Gi2"]
+    
