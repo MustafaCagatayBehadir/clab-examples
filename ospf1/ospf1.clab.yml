@@ -4,7 +4,7 @@ topology:
   kinds:
     arista_ceos:
       type: ceos
-      image: ceos:4.32.0F
+      image: ceos:4.32.1F
     
     cisco_c8000v:
       type: cisco_c8000v
@@ -12,7 +12,7 @@ topology:
     
     cisco_xrd:
       type: cisco_xrd
-      image: ios-xr/xrd-control-plane:7.11.2
+      image: ios-xr/xrd-control-plane:24.2.11
     
     nokia_sros:
       type: nokia_sros
@@ -46,11 +46,11 @@ topology:
 
   links:
     # Area 1 - Area 0 connection
-    - endpoints: ["ceos1:Ethernet1", "xrd1:Gi0-0-0-0"]
+    - endpoints: ["ceos1:eth1", "xrd1:Gi0-0-0-0"]
     # Internal Area 1 connection
-    - endpoints: ["ceos1:Ethernet2", "ceos2:Ethernet1"]
+    - endpoints: ["ceos1:eth2", "ceos2:eth1"]
 
-    # Area 0 Backbone connection
+    # Area 0 Backbone connectiond
     - endpoints: ["xrd1:Gi0-0-0-1", "xrd2:Gi0-0-0-0"]
 
     # Area 2 - Area 0 connection
