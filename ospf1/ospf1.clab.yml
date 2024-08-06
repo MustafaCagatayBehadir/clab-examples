@@ -13,11 +13,6 @@ topology:
     cisco_xrd:
       type: cisco_xrd
       image: ios-xr/xrd-control-plane:24.2.11
-    
-    nokia_sros:
-      type: nokia_sros
-      image: vrnetlab/vr-sros:24.3.R1
-      license: sros-v24.lic
 
   nodes:
     # Arista cEOS Nodes (Area 1)
@@ -25,18 +20,18 @@ topology:
       kind: arista_ceos
     ceos2:
       kind: arista_ceos
+    ceos3:
+      kind: arista_ceos
 
     # Cisco ASR9k XRd Nodes (Area 0)
     xrd1:
       kind: cisco_xrd
     xrd2:
       kind: cisco_xrd
-
-    # Nokia SROS Nodes (Area 0)
-    # sros1:
-    #   kind: nokia_sros
-    # sros:
-    #   kind: nokia_sros
+    xrd3:
+      kind: cisco_xrd
+    xrd4:
+      kind: cisco_xrd
 
     # Cisco 8000v Nodes (Area 2)
     c8000v1:
@@ -45,16 +40,26 @@ topology:
       kind: cisco_c8000v
 
   links:
-    # Area 1 - Area 0 connection
-    - endpoints: ["ceos1:eth1", "xrd1:Gi0-0-0-0"]
-    # Internal Area 1 connection
-    - endpoints: ["ceos1:eth2", "ceos2:eth1"]
+    # Area 1 - Area 0 connections
+    - endpoints: ["ceos1:eth1", "xrd1:Gi0-0-0-3"]
+    - endpoints: ["ceos2:eth1", "xrd3:Gi0-0-0-3"]
+    # Internal Area 1 connections
+    - endpoints: ["ceos1:eth2", "ceos2:eth2"]
+    - endpoints: ["ceos1:eth3", "ceos3:eth1"]
+    - endpoints: ["ceos2:eth3", "ceos3:eth2"]
 
-    # Area 0 Backbone connectiond
-    - endpoints: ["xrd1:Gi0-0-0-1", "xrd2:Gi0-0-0-0"]
+    # Area 0 Backbone connections
+    - endpoints: ["xrd1:Gi0-0-0-0", "xrd2:Gi0-0-0-0"]
+    - endpoints: ["xrd1:Gi0-0-0-1", "xrd4:Gi0-0-0-1"]
+    - endpoints: ["xrd1:Gi0-0-0-2", "xrd3:Gi0-0-0-0"]
+    - endpoints: ["xrd2:Gi0-0-0-1", "xrd3:Gi0-0-0-1"]
+    - endpoints: ["xrd2:Gi0-0-0-2", "xrd4:Gi0-0-0-0"]
+    - endpoints: ["xrd3:Gi0-0-0-2", "xrd4:Gi0-0-0-2"]
 
-    # Area 2 - Area 0 connection
-    - endpoints: ["c8000v1:Gi2", "xrd2:Gi0-0-0-1"]
-    # Internal Area 2 connection
-    - endpoints: ["c8000v1:Gi3", "c8000v2:Gi2"]
+
+    # Area 2 - Area 0 connections
+    - endpoints: ["c8000v1:Gi2", "xrd2:Gi0-0-0-3"]
+    - endpoints: ["c8000v2:Gi2", "xrd4:Gi0-0-0-3"]
+    # Internal Area 2 connections
+    - endpoints: ["c8000v1:Gi3", "c8000v2:Gi3"]
     
