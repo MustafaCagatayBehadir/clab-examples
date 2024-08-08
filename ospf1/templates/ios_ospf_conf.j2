@@ -1,0 +1,28 @@
+<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+   <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+      <router>
+			<router-ospf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf">
+				<ospf>
+					<process-id>
+						<id>{{ ospf['process_id'] }}</id>
+                  {% for AREA in ospf['areas'] %}
+                  {% for INTERFACE in AREA['interfaces'] %}
+						<network>
+							<ip>{{ INTERFACE['network'] }}</ip>
+							<wildcard>{{ INTERFACE['wildcard'] }}</wildcard>
+							<area>{{ AREA['id'] }}</area>
+						</network>
+                  {% if INTERFACE['name'].startswith('Loopback') %}
+						<passive-interface>
+							<interface>{{ INTERFACE['name'] }}</interface>
+						</passive-interface>
+                  {% endif %}
+                  {% endfor %}
+                  {% endfor %}
+						<router-id>{{ ospf['router_id'] }}</router-id>
+					</process-id>
+				</ospf>
+			</router-ospf>
+		</router>
+   </native>
+</config>

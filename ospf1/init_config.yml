@@ -1,0 +1,69 @@
+---
+- name: Configure OSPF1 Topology
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Configure XRD routers
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+      block:
+        - name: Configure XRD global parameters
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'xr_global_conf.j2') }}"
+          
+        - name: Configure XRD interfaces
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'xr_interface_conf.j2') }}"
+
+        - name: Configure XRD ospf process
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'xr_ospf_conf.j2') }}"
+
+    - name: Configure cEOS routers
+      when: ansible_network_os == 'arista.eos.eos'
+      block:
+        - name: Configure cEOS global parameters
+          arista.eos.config:
+            src: 'eos_global_conf.j2'
+            save_when: changed
+
+        - name: Configure cEOS interfaces
+          arista.eos.config:
+            src: 'eos_interface_conf.j2'
+            save_when: changed
+
+        - name: Configure cEOS ospf process
+          arista.eos.config:
+            src: 'eos_ospf_conf.j2'
+            save_when: changed
+
+        - name: Configure cEOS ospf interfaces
+          arista.eos.config:
+            src: 'eos_ospf_interface_conf.j2'
+            save_when: changed
+
+    - name: Configure c8000v routers
+      when: ansible_network_os == 'cisco.ios.ios'
+      block:
+        - name: Configure c8000v global parameters
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'ios_global_conf.j2') }}"
+
+        - name: Configure c8000v interfaces
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'ios_interface_conf.j2') }}"
+
+        - name: Configure c8000v ospf process
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'ios_ospf_conf.j2') }}"
+
+        - name: Configure c8000v ospf interfaces
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'ios_ospf_interface_conf.j2') }}"

@@ -1,0 +1,11 @@
+router ospf {{ ospf['process_id']}}
+   router-id {{ ospf['router_id'] }}
+   {% for AREA in ospf['areas'] %}
+   {% for INTERFACE in AREA['interfaces'] %}
+   {% if INTERFACE['name'].startswith('Loopback') %}
+   passive-interface {{ INTERFACE['name'] }}
+   {% endif %}
+   network {{ INTERFACE['prefix'] }} area {{ AREA['id'] }}
+   {% endfor %}
+   {% endfor %}
+!

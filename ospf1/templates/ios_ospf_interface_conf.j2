@@ -1,0 +1,23 @@
+<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+   <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+      {% for INTERFACE in interfaces %}
+      <interface>
+         {% if INTERFACE['name'].startswith('GigabitEthernet') %}
+         <GigabitEthernet>
+            <name>{{ INTERFACE['name'].replace('GigabitEthernet', '') }}</name>
+            <description>{{ INTERFACE['description'] }}</description>
+            <ip>
+					<router-ospf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf">
+						<ospf>
+							<network>
+								<point-to-point/>
+							</network>
+						</ospf>
+					</router-ospf>
+            </ip>
+         </GigabitEthernet>
+         {% endif %}
+      </interface>
+      {% endfor %}
+   </native>
+</config>

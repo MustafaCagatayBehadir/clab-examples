@@ -1,0 +1,17 @@
+<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+        <snmp-server>
+            <community-config xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-snmp">
+                <name>olympos_community</name>
+                <permission>ro</permission>
+            </community-config>
+            <community xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-snmp">
+                <name>olympos_community</name>
+                <RO/>
+            </community>
+        </snmp-server>
+        <lldp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-lldp">
+            <run/>
+        </lldp>
+    </native>
+</config>

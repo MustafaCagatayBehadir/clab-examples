@@ -1,0 +1,9 @@
+{% for INTERFACE in interfaces %}
+interface {{ INTERFACE['name'] }}
+   description {{ INTERFACE['description'] }}
+   {% if not INTERFACE['name'].startswith('Loopback') %}
+   no switchport
+   {% endif %}
+   ip address {{ INTERFACE['ipv4_address'] }}
+!
+{% endfor %}

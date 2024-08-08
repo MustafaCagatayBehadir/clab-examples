@@ -1,0 +1,6 @@
+{% for INTERFACE in interfaces %}
+{% if not INTERFACE['name'].startswith('Loopback') %}
+interface {{ INTERFACE['name'] }}
+   ip ospf network point-to-point
+{% endif %}
+{% endfor %}

@@ -1,0 +1,28 @@
+<config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+    {% for INTERFACE in interfaces %}
+    <interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
+        <interface-configuration>
+            <active>act</active>
+            <interface-name>{{ INTERFACE['name'] }}</interface-name>
+            {% if INTERFACE['name'].startswith('Loopback') %}
+            <interface-virtual></interface-virtual>
+            {% endif %}
+            <description>{{ INTERFACE['description'] }}</description>
+            <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+                <addresses>
+                    <primary>
+                        <address>{{ INTERFACE['ipv4_address'] | ansible.utils.ipaddr('address') }}</address>
+                        <netmask>{{ INTERFACE['ipv4_address'] | ansible.utils.ipaddr('netmask') }}</netmask>
+                    </primary>
+                </addresses>
+            </ipv4-network>
+            {% if not INTERFACE['name'].startswith('Loopback') %}
+            <lldp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ethernet-lldp-cfg">
+                <lldp-intf-enter>true</lldp-intf-enter>
+            </lldp>
+            <shutdown xc:operation="remove"/>
+            {% endif %}
+        </interface-configuration>
+    </interface-configurations>
+    {% endfor %}
+</config>

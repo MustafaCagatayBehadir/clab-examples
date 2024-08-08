@@ -1,0 +1,36 @@
+<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+   <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+      {% for INTERFACE in interfaces %}
+      <interface>
+         {% if INTERFACE['name'].startswith('GigabitEthernet') %}
+         <GigabitEthernet>
+            <name>{{ INTERFACE['name'].replace('GigabitEthernet', '') }}</name>
+            <description>{{ INTERFACE['description'] }}</description>
+            <ip>
+               <address>
+                  <primary>
+                     <address>{{ INTERFACE['ipv4_address'] | ansible.utils.ipaddr('address') }}</address>
+                     <mask>{{ INTERFACE['ipv4_address'] | ansible.utils.ipaddr('netmask') }}</mask>
+                  </primary>
+               </address>
+            </ip>
+            <shutdown xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0" nc:operation="remove"/>
+         </GigabitEthernet>
+         {% elif INTERFACE['name'].startswith('Loopback') %}
+         <Loopback>
+            <name>{{ INTERFACE['name'].replace('Loopback', '') }}</name>
+            <description>{{ INTERFACE['description'] }}</description>
+            <ip>
+               <address>
+                  <primary>
+                     <address>{{ INTERFACE['ipv4_address'] | ansible.utils.ipaddr('address') }}</address>
+                     <mask>{{ INTERFACE['ipv4_address'] | ansible.utils.ipaddr('netmask') }}</mask>
+                  </primary>
+               </address>
+            </ip>
+         </Loopback>
+         {% endif %}
+      </interface>
+      {% endfor %}
+   </native>
+</config>
