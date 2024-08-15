@@ -1,0 +1,29 @@
+---
+interfaces:
+  - name: lo0
+    description: Loopback0
+    ipv4_addresses:
+      - address: "100.0.0.11/32"
+        primary: true
+      - address: "100.0.1.11/32"
+        primary: false
+  - name: ge-0/0/1
+    description: to_xrd1_Gi0/0/0/3
+    ipv4_addresses:
+      - address: "10.1.11.2/30"
+        primary: false
+  - name: ge-0/0/2
+    description: to_xrd2_Gi0/0/0/3
+    ipv4_addresses:
+      - address: "10.2.11.2/30"
+        primary: false
+
+ospf:
+  process_name: CORE
+  router_id: "100.0.0.11"
+  areas:
+    - id: "0.0.0.0"
+      interfaces:
+        - lo0.0
+        - ge-0/0/1.0
+        - ge-0/0/2.0

@@ -1,0 +1,35 @@
+---
+- name: Configure OSPF1 Topology
+  hosts: juniper_vjunosrouter
+  gather_facts: false
+
+  tasks:
+    - name: Configure XRD routers
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+      block:
+        - name: Configure XRD global parameters
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'xr_global_conf.j2') }}"
+
+        - name: Configure XRD interfaces
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{  lookup('template', 'xr_interface_conf.j2') }}"
+
+        - name: Configure XRD ospf process
+          ansible.netcommon.netconf_config:
+            format: xml
+            content: "{{ lookup('template', 'xr_ospf_conf.j2') }}"
+
+    - name: Configure vmx routers
+      when: ansible_network_os == 'junipernetworks.junos.junos'
+      timeout: 60
+      block:
+        - name: Configure vmx global parameters
+          junipernetworks.junos.junos_config:
+            src: "junos_global_conf.j2"
+
+        - name: Configure vmx interfaces
+          junipernetworks.junos.junos_config:
+            src: "junos_interface_conf.j2"

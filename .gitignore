@@ -1,2 +1,4 @@
-clab-ospf1
-.ospf1.clab.yml.bak
+ospf1/clab-ospf1
+ospf1/.ospf1.clab.yml.bak
+ospf2/clab-ospf2
+ospf2/.ospf2.clab.yml.bak

@@ -1,0 +1,43 @@
+name: ospf2
+
+topology:
+  kinds:
+    cisco_xrd:
+      type: cisco_xrd
+      image: ios-xr/xrd-control-plane:24.2.11
+
+    juniper_vjunosrouter:
+      type: juniper_vjunosrouter
+      image: vrnetlab/vr-vjunosrouter:23.2R1.15
+
+  nodes:
+    # Cisco ASR9k XRd Nodes (Area 0)
+    xrd1:
+      kind: cisco_xrd
+    xrd2:
+      kind: cisco_xrd
+    xrd3:
+      kind: cisco_xrd
+    xrd4:
+      kind: cisco_xrd
+
+    # Juniper VMX Nodes (Area 0)
+    vmx1:
+      kind: juniper_vjunosrouter
+    vmx2:
+      kind: juniper_vjunosrouter
+
+
+  links:
+    # Area 0 Backbone connections
+    - endpoints: ["xrd1:Gi0-0-0-0", "xrd2:Gi0-0-0-0"]
+    - endpoints: ["xrd1:Gi0-0-0-1", "xrd4:Gi0-0-0-1"]
+    - endpoints: ["xrd1:Gi0-0-0-2", "xrd3:Gi0-0-0-0"]
+    - endpoints: ["xrd1:Gi0-0-0-3", "vmx1:ge-0/0/1"]
+    - endpoints: ["xrd2:Gi0-0-0-1", "xrd3:Gi0-0-0-1"]
+    - endpoints: ["xrd2:Gi0-0-0-2", "xrd4:Gi0-0-0-0"]
+    - endpoints: ["xrd2:Gi0-0-0-3", "vmx1:ge-0/0/2"]
+    - endpoints: ["xrd3:Gi0-0-0-2", "xrd4:Gi0-0-0-2"]
+    - endpoints: ["xrd3:Gi0-0-0-3", "vmx2:ge-0/0/1"]
+    - endpoints: ["xrd4:Gi0-0-0-3", "vmx2:ge-0/0/2"]
+

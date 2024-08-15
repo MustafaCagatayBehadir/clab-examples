@@ -1,0 +1,11 @@
+{% for INTERFACE in interfaces %}
+set interfaces {{ INTERFACE['name'] }} description {{ INTERFACE['description'] }}
+{% for ADDRESS in INTERFACE['ipv4_addresses'] %}
+{% if ADDRESS['primary'] %}
+set interfaces {{ INTERFACE['name'] }} unit 0 family inet address {{ ADDRESS['address'] }} primary
+set interfaces {{ INTERFACE['name'] }} unit 0 family inet address {{ ADDRESS['address'] }} preferred
+{% else %}
+set interfaces {{ INTERFACE['name'] }} unit 0 family inet address {{ ADDRESS['address'] }}
+{% endif %}
+{% endfor %}
+{% endfor %}

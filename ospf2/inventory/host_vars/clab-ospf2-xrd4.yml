@@ -1,0 +1,35 @@
+---
+interfaces:
+  - name: Loopback0
+    description: RouterID
+    ipv4_address: "100.0.0.4/32"
+  - name: Loopback1
+    description: MPLS_VPN_LOOPBACK
+    ipv4_address: "100.0.1.4/32" 
+  - name: GigabitEthernet0/0/0/0
+    description: to_xrd2_Gi0/0/0/2
+    ipv4_address: "10.2.4.2/30"
+  - name: GigabitEthernet0/0/0/1
+    description: to_xrd1_Gi0/0/0/1
+    ipv4_address: "10.1.4.2/30"
+  - name: GigabitEthernet0/0/0/2
+    description: to_xrd3_Gi0/0/0/2
+    ipv4_address: "10.3.4.2/30"
+  - name: GigabitEthernet0/0/0/3
+    description: to_vmx2_ge-0/0/2
+    ipv4_address: "10.4.22.1/30"
+
+ospf:
+  process_name: CORE
+  router_id: "100.0.0.4"
+  areas:
+    - id: "0.0.0.0"
+      interfaces:
+        - Loopback0
+        - Loopback1
+        - GigabitEthernet0/0/0/0
+        - GigabitEthernet0/0/0/1
+        - GigabitEthernet0/0/0/2
+    - id: "0.0.0.2"
+      interfaces:
+        - GigabitEthernet0/0/0/3
