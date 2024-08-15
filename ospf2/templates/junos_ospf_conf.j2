@@ -1,0 +1,9 @@
+{% for AREA in ospf['areas'] %}
+{% for INTERFACE in AREA['interfaces'] %}
+{% if INTERFACE.startswith('lo') %}
+set protocols ospf area {{ AREA['id'] }} interface {{ INTERFACE }} passive
+{% else %}
+set protocols ospf area {{ AREA['id'] }} interface {{ INTERFACE }} interface-type p2p
+{% endif %}
+{% endfor %}
+{% endfor %}

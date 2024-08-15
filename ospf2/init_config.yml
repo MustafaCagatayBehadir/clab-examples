@@ -1,6 +1,6 @@
 ---
 - name: Configure OSPF1 Topology
-  hosts: juniper_vjunosrouter
+  hosts: all
   gather_facts: false
 
   tasks:
@@ -24,7 +24,6 @@
 
     - name: Configure vmx routers
       when: ansible_network_os == 'junipernetworks.junos.junos'
-      timeout: 60
       block:
         - name: Configure vmx global parameters
           junipernetworks.junos.junos_config:
@@ -33,3 +32,7 @@
         - name: Configure vmx interfaces
           junipernetworks.junos.junos_config:
             src: "junos_interface_conf.j2"
+
+        - name: Configure vmx ospf process
+          junipernetworks.junos.junos_config:
+            src: "junos_ospf_conf.j2"
